@@ -1,0 +1,746 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;}
+:root{--fb:#1877f2;--fb2:#166fe5;--bg:#f0f2f5;--white:#ffffff;--g1:#050505;--g2:#65676b;--g3:#e4e6eb;--g4:#f0f2f5;--border:#ced0d4;--card-shadow:0 1px 2px rgba(0,0,0,.2);}
+body{background:var(--bg);}
+
+.nav{background:#fff;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;box-shadow:0 2px 4px rgba(0,0,0,.1);position:sticky;top:0;z-index:300;}
+.logo{width:40px;height:40px;background:#1877f2;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.logo svg{width:24px;height:24px;fill:#fff;}
+.search-pill{display:flex;align-items:center;background:#f0f2f5;border-radius:50px;padding:8px 12px;gap:8px;cursor:pointer;min-width:240px;height:40px;}
+.search-pill input{background:none;border:none;outline:none;font-size:15px;color:#050505;width:100%;}
+.search-pill input::placeholder{color:#65676b;}
+.nav-mid{display:flex;align-items:center;gap:2px;}
+.ntab{position:relative;width:112px;height:48px;border:none;background:none;cursor:pointer;border-radius:8px;display:flex;align-items:center;justify-content:center;border-bottom:3px solid transparent;transition:background .15s;}
+.ntab:hover{background:#f0f2f5;}
+.ntab.active{border-bottom:3px solid #1877f2;}
+.ntab svg{width:24px;height:24px;fill:#65676b;}
+.ntab.active svg{fill:#1877f2;}
+.ntab .badge{position:absolute;top:6px;right:22px;background:#f02849;color:#fff;font-size:10px;font-weight:700;border-radius:50px;padding:1px 5px;border:2px solid #fff;min-width:18px;text-align:center;}
+.nav-right{display:flex;align-items:center;gap:8px;}
+.nav-av{width:36px;height:36px;border-radius:50%;background:#1877f2;color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.ic-btn{width:36px;height:36px;border-radius:50%;background:#e4e6eb;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative;transition:background .15s;}
+.ic-btn:hover{background:#d8dadf;}
+.ic-btn svg{width:20px;height:20px;fill:#050505;}
+.nbadge{position:absolute;top:-3px;right:-3px;background:#f02849;color:#fff;font-size:10px;font-weight:700;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;border:2px solid #fff;}
+
+.layout{display:grid;grid-template-columns:280px 1fr 280px;max-width:1200px;margin:0 auto;padding:56px 0 0;gap:0;}
+.sl,.sr{padding:16px 8px;position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto;scrollbar-width:none;}
+.sl::-webkit-scrollbar,.sr::-webkit-scrollbar{display:none;}
+.feed-col{padding:16px 8px;display:flex;flex-direction:column;align-items:center;gap:0;}
+.feed-inner{width:100%;max-width:500px;}
+
+.mi{display:flex;align-items:center;gap:12px;padding:8px;border-radius:8px;cursor:pointer;margin-bottom:2px;transition:background .12s;}
+.mi:hover{background:#e4e6eb;}
+.mi-ic{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.mi-ic svg{width:20px;height:20px;}
+.mi-label{font-size:15px;font-weight:500;color:#050505;}
+.sec-hdr{font-size:17px;font-weight:700;color:#050505;padding:16px 8px 4px;}
+.sep{height:1px;background:#ced0d4;margin:8px 0;}
+.see-more{display:flex;align-items:center;gap:12px;padding:8px;border-radius:8px;cursor:pointer;transition:background .12s;}
+.see-more:hover{background:#e4e6eb;}
+.see-more-ic{width:36px;height:36px;border-radius:50%;background:#e4e6eb;display:flex;align-items:center;justify-content:center;}
+.see-more-ic svg{width:18px;height:18px;fill:#050505;}
+.see-more-label{font-size:15px;font-weight:500;color:#050505;}
+
+.card{background:#fff;border-radius:8px;box-shadow:var(--card-shadow);margin-bottom:16px;overflow:hidden;}
+
+.story-row{display:flex;gap:8px;padding:12px;overflow-x:auto;scrollbar-width:none;}
+.story-row::-webkit-scrollbar{display:none;}
+.sc{width:115px;height:200px;border-radius:12px;position:relative;cursor:pointer;flex-shrink:0;overflow:hidden;transition:filter .15s;}
+.sc:hover{filter:brightness(.92);}
+.sc-bg{width:100%;height:140px;display:flex;align-items:center;justify-content:center;font-size:56px;}
+.sc-bottom{height:60px;background:#fff;display:flex;align-items:flex-end;justify-content:center;padding-bottom:10px;}
+.sc-name{font-size:12px;font-weight:700;color:#050505;text-align:center;}
+.sc-av-ring{position:absolute;top:8px;left:8px;width:34px;height:34px;border-radius:50%;border:3px solid #1877f2;overflow:hidden;}
+.sc-av{width:100%;height:100%;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#fff;}
+.sc-add-icon{position:absolute;top:104px;left:50%;transform:translateX(-50%);width:38px;height:38px;border-radius:50%;background:#1877f2;border:4px solid #fff;display:flex;align-items:center;justify-content:center;z-index:2;}
+.sc-add-icon svg{width:18px;height:18px;fill:#fff;}
+
+.create-box{padding:12px 16px 4px;}
+.create-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.create-av{width:40px;height:40px;border-radius:50%;background:#1877f2;color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;}
+.create-input{flex:1;background:#f0f2f5;border:1px solid #ced0d4;border-radius:20px;padding:8px 16px;font-size:15px;color:#65676b;cursor:pointer;transition:background .1s;text-align:left;}
+.create-input:hover{background:#e4e6eb;}
+.create-divider{height:1px;background:#ced0d4;margin:0;}
+.create-actions{display:flex;padding:4px 8px 8px;}
+.ca-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 4px;border-radius:8px;border:none;background:transparent;font-size:13px;font-weight:700;color:#65676b;cursor:pointer;transition:background .12s;white-space:nowrap;}
+.ca-btn:hover{background:#f0f2f5;}
+.ca-btn svg{width:18px;height:18px;flex-shrink:0;}
+
+.post-hdr{padding:12px 16px 0;display:flex;align-items:flex-start;gap:10px;}
+.post-av{width:40px;height:40px;border-radius:50%;color:#fff;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;}
+.post-name{font-weight:700;font-size:15px;color:#050505;cursor:pointer;display:inline;}
+.post-name:hover{text-decoration:underline;}
+.post-privacy{display:inline-flex;align-items:center;gap:3px;background:#e4e6eb;border-radius:4px;padding:1px 5px;margin-left:4px;font-size:11px;font-weight:600;color:#050505;vertical-align:middle;}
+.post-privacy svg{width:10px;height:10px;fill:#050505;}
+.post-time{font-size:13px;color:#65676b;margin-top:1px;cursor:pointer;}
+.post-time:hover{text-decoration:underline;}
+.more-btn-post{margin-left:auto;width:36px;height:36px;border-radius:50%;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .12s;flex-shrink:0;}
+.more-btn-post:hover{background:#f0f2f5;}
+.more-btn-post svg{width:20px;height:20px;fill:#65676b;}
+.close-post-btn{width:36px;height:36px;border-radius:50%;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .12s;flex-shrink:0;}
+.close-post-btn:hover{background:#ffebee;}
+.close-post-btn svg{width:20px;height:20px;fill:#65676b;}
+.post-text{padding:10px 16px;font-size:15px;color:#050505;line-height:1.5;}
+.post-img{width:100%;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.post-img:hover{filter:brightness(.96);}
+
+.react-bar{padding:6px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #ced0d4;}
+.react-left{display:flex;align-items:center;gap:4px;cursor:pointer;}
+.react-left:hover span.rc-text{text-decoration:underline;}
+.react-icons{display:flex;}
+.react-icon{width:18px;height:18px;border-radius:50%;border:2px solid #fff;margin-left:-4px;font-size:11px;display:flex;align-items:center;justify-content:center;}
+.rc-text{font-size:15px;color:#65676b;margin-left:4px;}
+.react-right{display:flex;gap:12px;}
+.rc-link{font-size:15px;color:#65676b;cursor:pointer;}
+.rc-link:hover{text-decoration:underline;}
+
+.action-row{display:flex;padding:4px 8px;border-bottom:1px solid #ced0d4;}
+.act-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:8px;border-radius:6px;border:none;background:transparent;font-size:15px;font-weight:700;color:#65676b;cursor:pointer;transition:background .12s,color .12s,transform .1s;}
+.act-btn:hover{background:#f0f2f5;}
+.act-btn:active{transform:scale(.96);}
+.act-btn.liked{color:#1877f2;}
+.act-btn svg{width:20px;height:20px;fill:currentColor;}
+
+.cmt-section{padding:8px 16px 12px;}
+.view-more-cmts{font-size:14px;font-weight:700;color:#050505;cursor:pointer;margin-bottom:8px;}
+.view-more-cmts:hover{text-decoration:underline;}
+.cmt-item{display:flex;gap:8px;margin-bottom:8px;align-items:flex-start;}
+.cmt-av{width:32px;height:32px;border-radius:50%;color:#fff;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;}
+.cmt-bubble{background:#f0f2f5;border-radius:18px;padding:8px 12px;font-size:14px;color:#050505;max-width:360px;}
+.cmt-author{font-weight:700;font-size:13px;color:#050505;cursor:pointer;}
+.cmt-author:hover{text-decoration:underline;}
+.cmt-body{font-size:14px;color:#050505;line-height:1.4;}
+.cmt-actions{display:flex;gap:10px;margin-top:3px;padding-left:4px;}
+.cmt-act{font-size:12px;font-weight:700;color:#65676b;cursor:pointer;}
+.cmt-act:hover{text-decoration:underline;}
+.cmt-act.liked{color:#1877f2;}
+.cmt-input-row{display:flex;gap:8px;align-items:center;margin-top:8px;}
+.cmt-field{flex:1;background:#f0f2f5;border:none;border-radius:20px;padding:8px 16px;font-size:15px;outline:none;color:#050505;transition:background .12s;}
+.cmt-field:focus{background:#e4e6eb;}
+
+.fc{display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;transition:background .12s;}
+.fc:hover{background:#e4e6eb;}
+.fc-av{width:36px;height:36px;border-radius:50%;color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;}
+.online-dot{position:absolute;bottom:0;right:0;width:12px;height:12px;background:#44b700;border-radius:50%;border:2px solid #fff;}
+.offline-dot{position:absolute;bottom:0;right:0;width:12px;height:12px;background:#ccd0d5;border-radius:50%;border:2px solid #fff;}
+.fc-name{font-size:15px;font-weight:500;color:#050505;}
+
+.sponsored-card{padding:10px;cursor:pointer;}
+.sponsored-card:hover .sp-title{text-decoration:underline;}
+.sp-img{height:120px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:44px;margin-bottom:8px;}
+.sp-title{font-size:14px;font-weight:700;color:#050505;}
+.sp-url{font-size:13px;color:#65676b;}
+
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:#323232;color:#fff;padding:10px 22px;border-radius:8px;font-size:14px;z-index:9999;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+.modal-overlay{display:none;background:rgba(0,0,0,.5);min-height:480px;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.open{display:flex;}
+.modal{background:#fff;border-radius:10px;width:100%;max-width:500px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.3);}
+.modal-hdr{display:flex;align-items:center;justify-content:center;padding:12px 16px;border-bottom:1px solid #ced0d4;position:relative;}
+.modal-title{font-size:20px;font-weight:700;color:#050505;}
+.modal-close{position:absolute;right:12px;width:36px;height:36px;border-radius:50%;background:#e4e6eb;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .12s;}
+.modal-close:hover{background:#d8dadf;}
+.modal-close svg{width:18px;height:18px;fill:#050505;}
+.modal-body{padding:12px 16px;}
+.modal-user{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.modal-textarea{width:100%;border:none;outline:none;font-size:20px;resize:none;min-height:100px;font-family:inherit;color:#050505;line-height:1.4;}
+.modal-emoji-bar{display:flex;gap:10px;padding:8px 0;border-top:1px solid #ced0d4;border-bottom:1px solid #ced0d4;margin-bottom:10px;}
+.em-btn{font-size:22px;cursor:pointer;border-radius:6px;padding:4px 6px;transition:background .12s;}
+.em-btn:hover{background:#f0f2f5;}
+.modal-add-bar{border:1px solid #ced0d4;border-radius:8px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.modal-add-icons{display:flex;gap:4px;}
+.modal-add-icon{width:36px;height:36px;border-radius:50%;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .12s;}
+.modal-add-icon:hover{background:#f0f2f5;}
+.modal-add-icon svg{width:22px;height:22px;}
+.post-btn{width:100%;padding:10px;background:#1877f2;color:#fff;border:none;border-radius:6px;font-size:16px;font-weight:700;cursor:pointer;transition:background .12s,opacity .12s;}
+.post-btn:hover:not(:disabled){background:#166fe5;}
+.post-btn:disabled{background:#e4e6eb;color:#bcc0c4;cursor:not-allowed;}
+
+.new-posts-area{width:100%;max-width:500px;}
+</style>
+
+<div style="background:#f0f2f5;min-height:100vh;">
+
+<div class="nav">
+  <div style="display:flex;align-items:center;gap:8px;">
+    <div class="logo" onclick="showToast('Facebook home')">
+      <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+    </div>
+    <div class="search-pill">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="#65676b"><path d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" stroke="#65676b" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+      <input type="text" placeholder="Search Facebook" id="searchBox">
+    </div>
+  </div>
+  <div class="nav-mid">
+    <button class="ntab active" id="nt-home" onclick="switchTab('home')">
+      <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+    </button>
+    <button class="ntab" id="nt-watch" onclick="switchTab('watch')">
+      <svg viewBox="0 0 24 24"><path d="M15 10l4.553-2.276A1 1 0 0121 8.723v6.554a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>
+      <div class="badge">2</div>
+    </button>
+    <button class="ntab" id="nt-market" onclick="switchTab('market')">
+      <svg viewBox="0 0 24 24"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+    </button>
+    <button class="ntab" id="nt-groups" onclick="switchTab('groups')">
+      <svg viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+    </button>
+  </div>
+  <div class="nav-right">
+    <div class="nav-av" onclick="showToast('Your profile')">JD</div>
+    <div class="ic-btn" onclick="showToast('Menu')">
+      <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke="#050505" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+    </div>
+    <div class="ic-btn" onclick="clearNotif()">
+      <svg viewBox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" stroke="#050505" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+      <div class="nbadge" id="nbadge">3</div>
+    </div>
+    <div class="ic-btn" onclick="showToast('Messenger — coming soon!')">
+      <svg viewBox="0 0 24 24"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" stroke="#050505" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+    </div>
+  </div>
+</div>
+
+<div class="layout">
+
+<div class="sl">
+  <div class="mi" onclick="hilight(this)">
+    <div class="fc-av" style="background:#1877f2;width:36px;height:36px;font-size:13px;">👨🏻</div>
+    <span class="mi-label">Urs244190</span>
+  </div>
+  <div class="mi" onclick="hilight(this)">
+    <div class="mi-ic" style="background:#e7f3ff;"><svg viewBox="0 0 24 24" fill="#1877f2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg></div>
+    <span class="mi-label">Friends</span>
+  </div>
+  <div class="mi" onclick="hilight(this)">
+    <div class="mi-ic" style="background:#fff3e0;"><svg viewBox="0 0 24 24" fill="#f57c00"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 5h-2v6l5.25 3.15.75-1.23-4-2.37V7z"/></svg></div>
+    <span class="mi-label">Memories</span>
+  </div>
+  <div class="mi" onclick="hilight(this)">
+    <div class="mi-ic" style="background:#e8f5e9;"><svg viewBox="0 0 24 24" fill="#2e7d32"><path d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg></div>
+    <span class="mi-label">Saved</span>
+  </div>
+  <div class="mi" onclick="hilight(this)">
+    <div class="mi-ic" style="background:#fce4ec;"><svg viewBox="0 0 24 24" fill="#c62828"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div>
+    <span class="mi-label">Groups</span>
+  </div>
+  <div class="mi" onclick="hilight(this)">
+    <div class="mi-ic" style="background:#f3e5f5;"><svg viewBox="0 0 24 24" fill="#7b1fa2"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm-10 9l-5-3.2V8h10v.8L11 12z"/></svg></div>
+    <span class="mi-label">Watch</span>
+  </div>
+  <div class="mi" onclick="hilight(this)">
+    <div class="mi-ic" style="background:#e3f2fd;"><svg viewBox="0 0 24 24" fill="#1565c0"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96C5 16.1 6.9 18 9 18h12v-2H9.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63H19c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0023.45 5H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
+    <span class="mi-label">Marketplace</span>
+  </div>
+  <div class="sep"></div>
+  <div class="sec-hdr" style="padding-top:4px;">Shortcuts</div>
+  <div class="mi" onclick="hilight(this)">
+    <div class="mi-ic" style="background:#e3f2fd;font-size:20px;">&#128187;</div>
+    <span class="mi-label">Tech Community</span>
+  </div>
+  <div class="mi" onclick="hilight(this)">
+    <div class="mi-ic" style="background:#fce4ec;font-size:20px;">&#127918;</div>
+    <span class="mi-label">Gaming Hub</span>
+  </div>
+  <div class="mi" onclick="hilight(this)">
+    <div class="mi-ic" style="background:#e8f5e9;font-size:20px;">&#127932;</div>
+    <span class="mi-label">Music Lovers</span>
+  </div>
+  <div class="sep"></div>
+  <div class="see-more" onclick="showToast('More options')">
+    <div class="see-more-ic"><svg viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke="#050505" stroke-width="2" stroke-linecap="round" fill="none"/></svg></div>
+    <span class="see-more-label">See more</span>
+  </div>
+  <div style="padding:16px 8px;font-size:12px;color:#65676b;line-height:1.8;">
+    Privacy · Terms · Advertising · Cookies · More<br>
+    Facebook &copy; 2025
+  </div>
+</div>
+
+<div class="feed-col">
+<div class="feed-inner">
+
+<div class="card">
+  <div class="story-row">
+    <div class="sc" style="border:1px solid #ced0d4;background:#f0f2f5;cursor:pointer;" onclick="openModal()">
+      <div style="height:140px;background:#e4e6eb;display:flex;align-items:center;justify-content:center;">
+        <div class="create-av" style="width:52px;height:52px;font-size:22px;">JD</div>
+      </div>
+      <div class="sc-add-icon"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="#fff" stroke-width="2.5" stroke-linecap="round" fill="none"/></svg></div>
+      <div class="sc-bottom"><span class="sc-name">Create Story</span></div>
+    </div>
+    <div class="sc" onclick="showToast('Viewing Sarah\'s story...')">
+      <div class="sc-bg" style="background:#6a0dad;">&#127749;</div>
+      <div class="sc-av-ring"><div class="sc-av" style="background:#e74c3c;">SM</div></div>
+      <div class="sc-bottom"><span class="sc-name">Sarah</span></div>
+    </div>
+    <div class="sc" onclick="showToast('Viewing Mike\'s story...')">
+      <div class="sc-bg" style="background:#1a73e8;">&#127858;</div>
+      <div class="sc-av-ring"><div class="sc-av" style="background:#27ae60;">MJ</div></div>
+      <div class="sc-bottom"><span class="sc-name">Mike</span></div>
+    </div>
+    <div class="sc" onclick="showToast('Viewing Emma\'s story...')">
+      <div class="sc-bg" style="background:#d32f2f;">&#127958;</div>
+      <div class="sc-av-ring"><div class="sc-av" style="background:#e67e22;">EL</div></div>
+      <div class="sc-bottom"><span class="sc-name">Emma</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="create-box">
+    <div class="create-row">
+      <div class="create-av" onclick="showToast('Your profile')">JD</div>
+      <div class="create-input" onclick="openModal()">What's on your mind, John?</div>
+    </div>
+    <div class="create-divider"></div>
+    <div class="create-actions">
+      <button class="ca-btn" onclick="openModal()">
+        <svg viewBox="0 0 24 24" fill="#f3425f"><path d="M15 10l4.553-2.276A1 1 0 0121 8.723v6.554a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>
+        Live video
+      </button>
+      <button class="ca-btn" onclick="openModal()">
+        <svg viewBox="0 0 24 24" fill="#45bd62"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke="#45bd62" fill="none" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Photo/Video
+      </button>
+      <button class="ca-btn" onclick="openModal()">
+        <svg viewBox="0 0 24 24" fill="#f7b928"><circle cx="12" cy="12" r="10" fill="#f7b928"/><path d="M8 13s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01" stroke="#fff" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+        Feeling
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="new-posts-area"></div>
+
+<div class="card" id="post1">
+  <div class="post-hdr">
+    <div class="post-av" style="background:#e74c3c;width:40px;height:40px;" onclick="showToast('View Sarah\'s profile')">SM</div>
+    <div style="flex:1;">
+      <div>
+        <span class="post-name" onclick="showToast('View Sarah\'s profile')">Sarah Miller</span>
+        <span class="post-privacy"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" stroke="#fff" stroke-width="1.5" fill="none"/></svg> Public</span>
+      </div>
+      <div class="post-time" onclick="showToast('Posted 2 hours ago')">2 hours ago · <svg width="12" height="12" viewBox="0 0 24 24" style="vertical-align:middle;" fill="#65676b"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" stroke="#65676b" stroke-width="1.5" fill="none"/></svg></div>
+    </div>
+    <button class="more-btn-post" onclick="showToast('Save post · Hide post · Report')">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+    </button>
+  </div>
+  <div class="post-text">Just watched the most amazing sunset at the beach! &#127749; Nature is absolutely breathtaking. Feeling so grateful for moments like these &#128149;&#127758;</div>
+  <div class="post-img" style="height:280px;background:#fff3e0;font-size:90px;" onclick="showToast('View photo')">&#127749;</div>
+  <div class="react-bar">
+    <div class="react-left" onclick="showToast('47 people reacted')">
+      <div class="react-icons">
+        <div class="react-icon" style="background:#1877f2;font-size:11px;">&#128077;</div>
+        <div class="react-icon" style="background:#f3425f;font-size:11px;">&#10084;</div>
+        <div class="react-icon" style="background:#f7b928;font-size:11px;">&#128558;</div>
+      </div>
+      <span class="rc-text">47</span>
+    </div>
+    <div class="react-right">
+      <span class="rc-link" onclick="toggleCmt('c1')">12 comments</span>
+      <span class="rc-link" onclick="showToast('3 shares')">3 shares</span>
+    </div>
+  </div>
+  <div class="action-row">
+    <button class="act-btn" id="lb1" onclick="toggleLike(1)">
+      <svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14zm-7 11H4a2 2 0 01-2-2v-7a2 2 0 012-2h3" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span id="lt1">Like</span>
+    </button>
+    <button class="act-btn" onclick="toggleCmt('c1')">
+      <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Comment
+    </button>
+    <button class="act-btn" onclick="showToast('Post shared!')">
+      <svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Share
+    </button>
+  </div>
+  <div class="cmt-section" id="c1" style="display:none;">
+    <div class="view-more-cmts" onclick="showToast('Loading more comments...')">View 10 more comments</div>
+    <div id="cl1">
+      <div class="cmt-item">
+        <div class="cmt-av" style="background:#27ae60;">MJ</div>
+        <div>
+          <div class="cmt-bubble">
+            <div class="cmt-author">Mike Johnson</div>
+            <div class="cmt-body">Absolutely stunning! &#128149; Which beach is this?</div>
+          </div>
+          <div class="cmt-actions">
+            <span class="cmt-act" onclick="this.classList.toggle('liked');this.textContent=this.classList.contains('liked')?'Liked':'Like'">Like</span>
+            <span class="cmt-act" onclick="showToast('Replying to Mike...')">Reply</span>
+            <span style="font-size:12px;color:#65676b;">1 hr</span>
+          </div>
+        </div>
+      </div>
+      <div class="cmt-item">
+        <div class="cmt-av" style="background:#9b59b6;">AK</div>
+        <div>
+          <div class="cmt-bubble">
+            <div class="cmt-author">Alex Kim</div>
+            <div class="cmt-body">I need to visit! &#127749;&#127758;</div>
+          </div>
+          <div class="cmt-actions">
+            <span class="cmt-act" onclick="this.classList.toggle('liked');this.textContent=this.classList.contains('liked')?'Liked':'Like'">Like</span>
+            <span class="cmt-act" onclick="showToast('Replying to Alex...')">Reply</span>
+            <span style="font-size:12px;color:#65676b;">45 min</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="cmt-input-row">
+      <div class="create-av" style="width:32px;height:32px;font-size:12px;">JD</div>
+      <input class="cmt-field" placeholder="Write a comment... (Enter to post)" onkeydown="addCmt(event,1,'cl1','lc1','cc1')">
+    </div>
+  </div>
+</div>
+
+<div class="card" id="post2">
+  <div class="post-hdr">
+    <div class="post-av" style="background:#27ae60;width:40px;height:40px;" onclick="showToast('View Mike\'s profile')">MJ</div>
+    <div style="flex:1;">
+      <div>
+        <span class="post-name" onclick="showToast('View Mike\'s profile')">Mike Johnson</span>
+        <span class="post-privacy"><svg viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0" stroke="#fff" stroke-width="1.5" fill="none"/></svg> Friends</span>
+      </div>
+      <div class="post-time">5 hours ago</div>
+    </div>
+    <button class="more-btn-post" onclick="showToast('Save post · Hide post · Report')">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+    </button>
+  </div>
+  <div class="post-text">Made homemade pizza from scratch tonight! &#127829;&#128523; Three hours of work but so worth it. Drop a &#10084; if you want the recipe! #cooking #homemade #foodlover</div>
+  <div class="post-img" style="height:260px;background:#fff9e6;font-size:90px;" onclick="showToast('View photo')">&#127829;</div>
+  <div class="react-bar">
+    <div class="react-left" onclick="showToast('132 people reacted')">
+      <div class="react-icons">
+        <div class="react-icon" style="background:#f3425f;font-size:11px;">&#10084;</div>
+        <div class="react-icon" style="background:#f7b928;font-size:11px;">&#128523;</div>
+        <div class="react-icon" style="background:#1877f2;font-size:11px;">&#128077;</div>
+      </div>
+      <span class="rc-text" id="lc2">132</span>
+    </div>
+    <div class="react-right">
+      <span class="rc-link" onclick="toggleCmt('c2')"><span id="cc2">34</span> comments</span>
+      <span class="rc-link" onclick="showToast('15 shares')">15 shares</span>
+    </div>
+  </div>
+  <div class="action-row">
+    <button class="act-btn" id="lb2" onclick="toggleLike(2)">
+      <svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14zm-7 11H4a2 2 0 01-2-2v-7a2 2 0 012-2h3" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span id="lt2">Like</span>
+    </button>
+    <button class="act-btn" onclick="toggleCmt('c2')">
+      <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Comment
+    </button>
+    <button class="act-btn" onclick="showToast('Post shared!')">
+      <svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Share
+    </button>
+  </div>
+  <div class="cmt-section" id="c2" style="display:none;">
+    <div id="cl2">
+      <div class="cmt-item">
+        <div class="cmt-av" style="background:#e74c3c;">SM</div>
+        <div>
+          <div class="cmt-bubble">
+            <div class="cmt-author">Sarah Miller</div>
+            <div class="cmt-body">Recipe!! Please!! &#128149;&#127829;</div>
+          </div>
+          <div class="cmt-actions">
+            <span class="cmt-act" onclick="this.classList.toggle('liked');this.textContent=this.classList.contains('liked')?'Liked':'Like'">Like</span>
+            <span class="cmt-act" onclick="showToast('Replying...')">Reply</span>
+            <span style="font-size:12px;color:#65676b;">3 hr</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="cmt-input-row">
+      <div class="create-av" style="width:32px;height:32px;font-size:12px;">JD</div>
+      <input class="cmt-field" placeholder="Write a comment... (Enter to post)" onkeydown="addCmt(event,2,'cl2','lc2','cc2')">
+    </div>
+  </div>
+</div>
+
+<div class="card" id="post3">
+  <div class="post-hdr">
+    <div class="post-av" style="background:#9b59b6;width:40px;height:40px;" onclick="showToast('View Alex\'s profile')">AK</div>
+    <div style="flex:1;">
+      <div><span class="post-name" onclick="showToast('View Alex\'s profile')">Alex Kim</span></div>
+      <div class="post-time">Yesterday at 8:24 AM</div>
+    </div>
+    <button class="more-btn-post" onclick="showToast('Save post · Hide post · Report')">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+    </button>
+  </div>
+  <div class="post-text">Just hit a new personal best — 10K in 48 minutes! &#127939;&#128170; Who else is training for a marathon this year? Let's go! #running #fitness #marathon2025</div>
+  <div class="react-bar">
+    <div class="react-left" onclick="showToast('89 people reacted')">
+      <div class="react-icons">
+        <div class="react-icon" style="background:#1877f2;font-size:11px;">&#128293;</div>
+        <div class="react-icon" style="background:#f7b928;font-size:11px;">&#128079;</div>
+        <div class="react-icon" style="background:#1877f2;font-size:11px;">&#128077;</div>
+      </div>
+      <span class="rc-text" id="lc3">89</span>
+    </div>
+    <div class="react-right">
+      <span class="rc-link" onclick="toggleCmt('c3')"><span id="cc3">21</span> comments</span>
+      <span class="rc-link" onclick="showToast('7 shares')">7 shares</span>
+    </div>
+  </div>
+  <div class="action-row">
+    <button class="act-btn" id="lb3" onclick="toggleLike(3)">
+      <svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14zm-7 11H4a2 2 0 01-2-2v-7a2 2 0 012-2h3" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span id="lt3">Like</span>
+    </button>
+    <button class="act-btn" onclick="toggleCmt('c3')">
+      <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Comment
+    </button>
+    <button class="act-btn" onclick="showToast('Post shared!')">
+      <svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Share
+    </button>
+  </div>
+  <div class="cmt-section" id="c3" style="display:none;">
+    <div id="cl3"></div>
+    <div class="cmt-input-row">
+      <div class="create-av" style="width:32px;height:32px;font-size:12px;">JD</div>
+      <input class="cmt-field" placeholder="Write a comment... (Enter to post)" onkeydown="addCmt(event,3,'cl3','lc3','cc3')">
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+
+<div class="sr">
+  <div class="sec-hdr" style="padding-top:8px;">Sponsored</div>
+  <div class="sponsored-card card" onclick="showToast('Opening ad...')">
+    <div class="sp-img" style="background:#e8f5e9;">&#128722;</div>
+    <div class="sp-title">Summer Sale — Up to 50% off</div>
+    <div class="sp-url">shop.example.com</div>
+  </div>
+  <div class="sponsored-card card" onclick="showToast('Opening ad...')">
+    <div class="sp-img" style="background:#e3f2fd;">&#127925;</div>
+    <div class="sp-title">Spotify Premium — 3 months free</div>
+    <div class="sp-url">spotify.com</div>
+  </div>
+  <div class="sep"></div>
+  <div class="sec-hdr">People you may know</div>
+  <div style="padding:4px 0;">
+    <div style="display:flex;align-items:center;gap:8px;padding:6px 4px;margin-bottom:8px;">
+      <div class="fc-av" style="background:#e74c3c;width:54px;height:54px;font-size:16px;flex-shrink:0;">JL</div>
+      <div style="flex:1;">
+        <div style="font-size:14px;font-weight:600;color:#050505;">Jessica Liu</div>
+        <div style="font-size:12px;color:#65676b;">3 mutual friends</div>
+        <button onclick="showToast('Friend request sent to Jessica!')" style="margin-top:6px;width:100%;background:#e7f3ff;border:none;border-radius:6px;padding:6px;font-size:13px;font-weight:700;color:#1877f2;cursor:pointer;transition:background .12s;" onmouseover="this.style.background='#d0e8fc'" onmouseout="this.style.background='#e7f3ff'">+ Add friend</button>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;padding:6px 4px;margin-bottom:8px;">
+      <div class="fc-av" style="background:#e67e22;width:54px;height:54px;font-size:16px;flex-shrink:0;">RP</div>
+      <div style="flex:1;">
+        <div style="font-size:14px;font-weight:600;color:#050505;">Ryan Park</div>
+        <div style="font-size:12px;color:#65676b;">5 mutual friends</div>
+        <button onclick="showToast('Friend request sent to Ryan!')" style="margin-top:6px;width:100%;background:#e7f3ff;border:none;border-radius:6px;padding:6px;font-size:13px;font-weight:700;color:#1877f2;cursor:pointer;transition:background .12s;" onmouseover="this.style.background='#d0e8fc'" onmouseout="this.style.background='#e7f3ff'">+ Add friend</button>
+      </div>
+    </div>
+  </div>
+  <div class="sep"></div>
+  <div class="sec-hdr">Friends online</div>
+  <div class="fc" onclick="showToast('Chat with Emma')">
+    <div class="fc-av" style="background:#e74c3c;width:36px;height:36px;font-size:13px;">EL<div class="online-dot"></div></div>
+    <span class="fc-name">Emma Lee</span>
+  </div>
+  <div class="fc" onclick="showToast('Chat with Alex')">
+    <div class="fc-av" style="background:#9b59b6;width:36px;height:36px;font-size:13px;">AK<div class="online-dot"></div></div>
+    <span class="fc-name">Alex Kim</span>
+  </div>
+  <div class="fc" onclick="showToast('Chat with Chris')">
+    <div class="fc-av" style="background:#e67e22;width:36px;height:36px;font-size:13px;">CP<div class="online-dot"></div></div>
+    <span class="fc-name">Chris Park</span>
+  </div>
+  <div class="fc" onclick="showToast('Chat with Lisa')">
+    <div class="fc-av" style="background:#1abc9c;width:36px;height:36px;font-size:13px;">LT<div class="offline-dot"></div></div>
+    <span class="fc-name">Lisa Tran</span>
+  </div>
+  <div class="fc" onclick="showToast('Chat with Mike')">
+    <div class="fc-av" style="background:#27ae60;width:36px;height:36px;font-size:13px;">MJ<div class="online-dot"></div></div>
+    <span class="fc-name">Mike Johnson</span>
+  </div>
+</div>
+
+</div>
+
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-hdr">
+      <span class="modal-title">Create post</span>
+      <button class="modal-close" onclick="closeModal()"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" stroke="#050505" stroke-width="2.5" stroke-linecap="round" fill="none"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-user">
+        <div class="create-av" style="width:44px;height:44px;font-size:16px;">JD</div>
+        <div>
+          <div style="font-weight:700;font-size:15px;color:#050505;">John Doe</div>
+          <select style="font-size:12px;border:1px solid #ced0d4;border-radius:4px;padding:3px 8px;background:#f0f2f5;color:#050505;cursor:pointer;margin-top:2px;">
+            <option>&#127758; Public</option>
+            <option>&#128101; Friends</option>
+            <option>&#128274; Only me</option>
+          </select>
+        </div>
+      </div>
+      <textarea class="modal-textarea" id="ptxt" placeholder="What's on your mind, John?" oninput="checkBtn()"></textarea>
+      <div class="modal-emoji-bar">
+        <span class="em-btn" onclick="addEmoji('&#127749;')">&#127749;</span>
+        <span class="em-btn" onclick="addEmoji('&#128149;')">&#128149;</span>
+        <span class="em-btn" onclick="addEmoji('&#128514;')">&#128514;</span>
+        <span class="em-btn" onclick="addEmoji('&#128293;')">&#128293;</span>
+        <span class="em-btn" onclick="addEmoji('&#127881;')">&#127881;</span>
+        <span class="em-btn" onclick="addEmoji('&#9917;')">&#9917;</span>
+        <span class="em-btn" onclick="addEmoji('&#127829;')">&#127829;</span>
+        <span class="em-btn" onclick="addEmoji('&#127758;')">&#127758;</span>
+      </div>
+      <div class="modal-add-bar">
+        <span style="font-size:14px;font-weight:700;color:#050505;">Add to your post</span>
+        <div class="modal-add-icons">
+          <button class="modal-add-icon" onclick="showToast('Add photo/video')"><svg viewBox="0 0 24 24" fill="#45bd62"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke="#45bd62" fill="none" stroke-width="2" stroke-linecap="round"/></svg></button>
+          <button class="modal-add-icon" onclick="showToast('Tag people')"><svg viewBox="0 0 24 24" fill="#1877f2"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" stroke="#1877f2" fill="none" stroke-width="2" stroke-linecap="round"/></svg></button>
+          <button class="modal-add-icon" onclick="showToast('Add feeling/activity')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#f7b928"/><path d="M8 13s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01" stroke="#fff" stroke-width="2" stroke-linecap="round" fill="none"/></svg></button>
+          <button class="modal-add-icon" onclick="showToast('Add location')"><svg viewBox="0 0 24 24" fill="#f3425f"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></button>
+        </div>
+      </div>
+      <button class="post-btn" id="psub" disabled onclick="submitPost()">Post</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+</div>
+
+<script>
+const liked={};
+const lc={1:47,2:132,3:89};
+const cc={1:12,2:34,3:21};
+let pid=100;
+let toastTimer;
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2400);
+}
+
+function switchTab(name){
+  ['home','watch','market','groups'].forEach(n=>{
+    document.getElementById('nt-'+n).classList.toggle('active',n===name);
+  });
+  if(name!=='home'){const l={watch:'Watch',market:'Marketplace',groups:'Groups'};showToast(l[name]+' — coming soon!');}
+}
+
+function hilight(el){
+  el.style.background='#e7f3ff';
+  setTimeout(()=>el.style.background='',1200);
+}
+
+function clearNotif(){
+  const b=document.getElementById('nbadge');
+  b.style.display='none';
+  showToast('All notifications cleared!');
+}
+
+function toggleLike(n){
+  const btn=document.getElementById('lb'+n);
+  const lt=document.getElementById('lt'+n);
+  const lcEl=document.getElementById('lc'+n);
+  if(liked[n]){
+    liked[n]=false;lc[n]--;
+    btn.classList.remove('liked');
+    lt.textContent='Like';
+  } else {
+    liked[n]=true;lc[n]++;
+    btn.classList.add('liked');
+    lt.textContent='Liked';
+    btn.style.transform='scale(1.2)';
+    setTimeout(()=>btn.style.transform='scale(1)',180);
+  }
+  if(lcEl)lcEl.textContent=lc[n];
+}
+
+function toggleCmt(id){
+  const el=document.getElementById(id);
+  const open=el.style.display!=='none';
+  el.style.display=open?'none':'block';
+  if(!open)setTimeout(()=>{const f=el.querySelector('.cmt-field');if(f)f.focus();},50);
+}
+
+const cmtColors=['#e74c3c','#27ae60','#9b59b6','#e67e22','#1abc9c','#3498db','#f39c12'];
+const cmtNames=['Lisa Tran','Chris Park','Ryan Park','Emma Lee','David Chen','Maya Ross','Tom Hill'];
+let cmtIdx=0;
+
+function addCmt(e,n,listId,lcId,ccId){
+  if(e.key!=='Enter')return;
+  const v=e.target.value.trim();
+  if(!v)return;
+  const list=document.getElementById(listId);
+  const d=document.createElement('div');
+  d.className='cmt-item';
+  d.style.animation='fadeIn .2s ease';
+  d.innerHTML=`<div class="cmt-av" style="background:#1877f2;">JD</div><div><div class="cmt-bubble"><div class="cmt-author">John Doe</div><div class="cmt-body">${v}</div></div><div class="cmt-actions"><span class="cmt-act" onclick="this.classList.toggle('liked');this.textContent=this.classList.contains('liked')?'Liked':'Like'">Like</span><span class="cmt-act" onclick="showToast('Replying...')">Reply</span><span style="font-size:12px;color:#65676b;">Just now</span></div></div>`;
+  list.appendChild(d);
+  e.target.value='';
+  cc[n]=(cc[n]||0)+1;
+  const ccEl=document.getElementById(ccId);
+  if(ccEl)ccEl.textContent=cc[n];
+  d.scrollIntoView({behavior:'smooth',block:'nearest'});
+  setTimeout(()=>{
+    const rnd=cmtIdx%cmtNames.length;cmtIdx++;
+    const r=document.createElement('div');
+    r.className='cmt-item';
+    r.innerHTML=`<div class="cmt-av" style="background:${cmtColors[rnd]};">${cmtNames[rnd].split(' ').map(x=>x[0]).join('')}</div><div><div class="cmt-bubble"><div class="cmt-author">${cmtNames[rnd]}</div><div class="cmt-body">Great point! &#128077;</div></div><div class="cmt-actions"><span class="cmt-act" onclick="this.classList.toggle('liked');this.textContent=this.classList.contains('liked')?'Liked':'Like'">Like</span><span class="cmt-act" onclick="showToast('Replying...')">Reply</span><span style="font-size:12px;color:#65676b;">Just now</span></div></div>`;
+    list.appendChild(r);
+    cc[n]++;if(ccEl)ccEl.textContent=cc[n];
+    r.scrollIntoView({behavior:'smooth',block:'nearest'});
+  },1200);
+}
+
+function openModal(){
+  document.getElementById('modal').classList.add('open');
+  setTimeout(()=>document.getElementById('ptxt').focus(),80);
+}
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+  document.getElementById('ptxt').value='';
+  document.getElementById('psub').disabled=true;
+}
+function checkBtn(){
+  const v=document.getElementById('ptxt').value.trim();
+  document.getElementById('psub').disabled=!v;
+}
+function addEmoji(em){
+  const t=document.getElementById('ptxt');
+  t.value+=em;t.focus();checkBtn();
+}
+function submitPost(){
+  const txt=document.getElementById('ptxt').value.trim();
+  if(!txt)return;
+  pid++;
+  const area=document.getElementById('new-posts-area');
+  const card=document.createElement('div');
+  card.className='card';
+  card.style.marginBottom='16px';
+  card.innerHTML=`<div class="post-hdr"><div class="post-av" style="background:#1877f2;width:40px;height:40px;font-size:14px;">JD</div><div style="flex:1;"><div><span class="post-name">John Doe</span><span class="post-privacy"><svg viewBox="0 0 24 24" width="10" height="10"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" stroke="#fff" stroke-width="1.5" fill="none"/></svg> Public</span></div><div class="post-time">Just now</div></div><button class="more-btn-post" onclick="this.closest('.card').remove();showToast('Post deleted')"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M18 6L6 18M6 6l12 12" stroke="#65676b" stroke-width="2" stroke-linecap="round" fill="none"/></svg></button></div><div class="post-text">${txt}</div><div class="react-bar"><div class="react-left"><div class="react-icons"></div><span class="rc-text" id="lc${pid}">0</span></div><div class="react-right"><span class="rc-link" onclick="toggleCmt('nc${pid}')"><span id="cc${pid}">0</span> comments</span></div></div><div class="action-row"><button class="act-btn" id="lb${pid}" onclick="toggleLike(${pid})"><svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14zm-7 11H4a2 2 0 01-2-2v-7a2 2 0 012-2h3" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="lt${pid}">Like</span></button><button class="act-btn" onclick="toggleCmt('nc${pid}')"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Comment</button><button class="act-btn" onclick="showToast('Post shared!')"><svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Share</button></div><div class="cmt-section" id="nc${pid}" style="display:none;"><div id="ncl${pid}"></div><div class="cmt-input-row"><div class="create-av" style="width:32px;height:32px;font-size:12px;">JD</div><input class="cmt-field" placeholder="Write a comment... (Enter to post)" onkeydown="addCmt(event,${pid},'ncl${pid}','lc${pid}','cc${pid}')"></div></div>`;
+  lc[pid]=0;cc[pid]=0;
+  area.insertBefore(card,area.firstChild);
+  closeModal();
+  card.scrollIntoView({behavior:'smooth',block:'start'});
+  showToast('Post published!');
+}
+</script>
